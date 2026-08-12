@@ -20,3 +20,11 @@ Today's LangChain implementation took fewer than 40 lines of code. In contrast, 
 
 ## When to use which?
 I would reach for LangChain in 90% of standard production RAG applications to get to market faster. However, if I needed a highly specialized search (e.g., legal or medical) where custom tokenizers or strict control over the RRF weighting mechanism was required, I would revert to a scratch-built system. Because I built it by hand first, the framework is no longer magic—it is just a convenience.
+
+# Day 3 Journal: Migrating the ReAct Agent to LangChain
+
+## The Core Loop Remains the Same
+The LangChain agent trace proved that the underlying mechanism is identical to my scratch-built Week 3 agent: Reason -> Request Tool -> Observe Result -> Answer. When given a tough query, the framework gracefully handled a 7-step reasoning loop, continually refining its search terms until it extracted the correct data.
+
+## The Value of Scratch-Building
+Today the framework's API broke on contact with the curriculum due to version drift (the deprecation of `AgentExecutor` in favor of `create_agent`). Furthermore, a third-party package (`duckduckgo-search`) changed its name to `ddgs`, causing tool failures. If I had only learned the framework, I would have been stuck. Because I built the underlying ReAct loop myself first, I understood the core mechanics, updated the tool's error handling, and adapted to the new API abstraction. Framework syntax is temporary; foundational mechanics are permanent.
