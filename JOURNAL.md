@@ -28,3 +28,14 @@ The LangChain agent trace proved that the underlying mechanism is identical to m
 
 ## The Value of Scratch-Building
 Today the framework's API broke on contact with the curriculum due to version drift (the deprecation of `AgentExecutor` in favor of `create_agent`). Furthermore, a third-party package (`duckduckgo-search`) changed its name to `ddgs`, causing tool failures. If I had only learned the framework, I would have been stuck. Because I built the underlying ReAct loop myself first, I understood the core mechanics, updated the tool's error handling, and adapted to the new API abstraction. Framework syntax is temporary; foundational mechanics are permanent.
+
+# Day 4 Journal: LlamaIndex vs. LangChain & Observability
+
+## The Generalist vs. The Specialist
+Building RAG with LlamaIndex took a fraction of the code compared to LangChain or my scratch-built Week 5 project. LlamaIndex excels at data-first retrieval pipelines, automatically handling chunking and embedding under the hood. LangChain, however, shines as an integration-first orchestrator for tool-calling agents. 
+
+## Regaining Visibility with Callbacks
+By subclassing `BaseCallbackHandler` and passing it via the `config` dictionary in LangChain 1.x, I was able to hook into the framework's internal lifecycle. This restored the granular visibility (printing LLM and tool triggers) that I lost when I moved away from writing my own explicit `while` loops.
+
+## The Reality of Deprecations
+For two days in a row, I encountered deprecated APIs (AgentExecutor in LangChain, and ServiceContext/Gemini imports in LlamaIndex). Frameworks move incredibly fast. Building from scratch first guarantees that I understand the underlying architecture (chunking, embeddings, RRF, ReAct loops) well enough to adapt when the syntactic sugar changes.
