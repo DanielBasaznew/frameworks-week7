@@ -39,3 +39,14 @@ By subclassing `BaseCallbackHandler` and passing it via the `config` dictionary 
 
 ## The Reality of Deprecations
 For two days in a row, I encountered deprecated APIs (AgentExecutor in LangChain, and ServiceContext/Gemini imports in LlamaIndex). Frameworks move incredibly fast. Building from scratch first guarantees that I understand the underlying architecture (chunking, embeddings, RRF, ReAct loops) well enough to adapt when the syntactic sugar changes.
+
+# Day 5 Journal: Plan-and-Execute Architecture & Verification
+
+## ReAct vs. Plan-and-Execute Trade-offs
+* **Plan-and-Execute:** Ideal for structured research and complex multi-step objectives. Front-loading the roadmap prevents the agent from losing context in circular loops. The dedicated **Verifier** stage provides an explicit quality gate that flags missing information or unmet constraints before returning results.
+* **ReAct:** Best suited for dynamic, reactive tasks where immediate tool feedback determines the very next action (e.g., interactive CLI debugging or simple conversational queries).
+
+## Observations from Today's Build
+1. **Context Flow:** Passing accumulated context forward allowed dependent steps (e.g., Step 4 calculations) to adapt logically based on the findings of earlier steps.
+2. **Defensive Tool Design:** Implementing timeouts on external tools (DuckDuckGo) prevented unbounded hanging and allowed clean fallbacks.
+3. **Structured Verification:** The verifier accurately flagged gaps (`Status: INCOMPLETE`) when specific sub-goals could not be fulfilled, preventing silent hallucinations.
